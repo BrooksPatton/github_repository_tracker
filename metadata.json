@@ -1,0 +1,143 @@
+{
+  "resource_version": 3,
+  "metadata": {
+    "version": 3,
+    "sources": [
+      {
+        "name": "default",
+        "kind": "postgres",
+        "tables": [
+          {
+            "table": {
+              "schema": "public",
+              "name": "languages"
+            },
+            "array_relationships": [
+              {
+                "name": "repositories",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "language_id",
+                    "table": {
+                      "schema": "public",
+                      "name": "repositories"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "platforms"
+            },
+            "array_relationships": [
+              {
+                "name": "repositories",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "platform_id",
+                    "table": {
+                      "schema": "public",
+                      "name": "repositories"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "repositories"
+            },
+            "object_relationships": [
+              {
+                "name": "language",
+                "using": {
+                  "foreign_key_constraint_on": "language_id"
+                }
+              },
+              {
+                "name": "platform",
+                "using": {
+                  "foreign_key_constraint_on": "platform_id"
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "repository_keys",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "repository_id",
+                    "table": {
+                      "schema": "public",
+                      "name": "repository_key"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "repository_key"
+            },
+            "object_relationships": [
+              {
+                "name": "repository",
+                "using": {
+                  "foreign_key_constraint_on": "repository_id"
+                }
+              },
+              {
+                "name": "tag",
+                "using": {
+                  "foreign_key_constraint_on": "tag_id"
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "tags"
+            },
+            "array_relationships": [
+              {
+                "name": "repository_keys",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "tag_id",
+                    "table": {
+                      "schema": "public",
+                      "name": "repository_key"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "configuration": {
+          "connection_info": {
+            "use_prepared_statements": true,
+            "database_url": {
+              "from_env": "HASURA_GRAPHQL_DATABASE_URL"
+            },
+            "isolation_level": "read-committed",
+            "pool_settings": {
+              "connection_lifetime": 600,
+              "retries": 1,
+              "idle_timeout": 180,
+              "max_connections": 50
+            }
+          }
+        }
+      }
+    ]
+  }
+}
